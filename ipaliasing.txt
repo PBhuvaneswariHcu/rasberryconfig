@@ -1,0 +1,20 @@
+Ip aliasing for eth0 which has dhcp ip for eth0:-
+------------------------------------------------
+1. configured dhcp ip through gui - enabled automatically configure, added dns server ips 
+2.  add eth0:1 in /etc/network/interfaces - auto eth0
+                                            allow hot-plug eth0
+                                            iface eth0 inet dhcp
+                                            
+                                            auto eth0:1
+                                            iface eth0:1 inet static
+                                            address 10.x.x.x (unused in dhcp ip)
+                                            netmask 255.255.255.0 (this is for ur LAN dhcp)
+3. add eth0:1 in /etc/dhcpcd.conf - interface eth0:1
+                                    static ip_address=10.x.x.x/24
+                                    static routers=10.x.x.x
+                                    static domain_name_server=10.x.x.x
+4. sudo /sbin/ifup eth0:1
+5. sudo /etc/init.d/networking/restart
+6. check ifconfig, displays eth0:1 ip
+7. u can reboot and check ifconfig
+8. ping to this eth0:1 ip from another host, ping is successful!!
